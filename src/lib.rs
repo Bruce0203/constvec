@@ -3,10 +3,7 @@
 #![feature(generic_const_exprs)]
 
 use core::slice;
-use std::{
-    mem::MaybeUninit,
-    ops::{Add, Deref, DerefMut, Index, IndexMut},
-};
+use std::{mem::MaybeUninit, ops::Add};
 
 #[derive(Debug)]
 pub struct ConstVec<T> {
@@ -106,6 +103,13 @@ impl<T, const N: usize> ConstVec<[T; N]> {
         };
         dst.copy_from_slice(src);
         result
+    }
+
+    pub const fn get_mut(&mut self, index: usize) -> &mut T {
+        if index >= self.len {
+            panic!()
+        }
+        &mut self.arr[index]
     }
 }
 
