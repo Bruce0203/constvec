@@ -5,6 +5,21 @@
 use core::slice;
 use std::{mem::MaybeUninit, ops::Add};
 
+const unsafe fn const_transmute<A, B>(a: A) -> B {
+    if std::mem::size_of::<A>() != std::mem::size_of::<B>() {
+        panic!("Size mismatch for generic_array::const_transmute");
+    }
+
+    #[repr(C)]
+    union Union<A, B> {
+        a: std::mem::ManuallyDrop<A>,
+        b: std::mem::ManuallyDrop<B>,
+    }
+
+    let a = std::mem::ManuallyDrop::new(a);
+    unsafe { std::mem::ManuallyDrop::into_inner(Union { a }.b) }
+}
+
 #[derive(Debug)]
 pub struct ConstVec<T> {
     len: usize,
@@ -154,19 +169,4 @@ where
             arr: unsafe { const_transmute(slice) },
         }
     }
-}
-
-pub const unsafe fn const_transmute<A, B>(a: A) -> B {
-    if std::mem::size_of::<A>() != std::mem::size_of::<B>() {
-        panic!("Size mismatch for generic_array::const_transmute");
-    }
-
-    #[repr(C)]
-    union Union<A, B> {
-        a: std::mem::ManuallyDrop<A>,
-        b: std::mem::ManuallyDrop<B>,
-    }
-
-    let a = std::mem::ManuallyDrop::new(a);
-    std::mem::ManuallyDrop::into_inner(Union { a }.b)
 }
