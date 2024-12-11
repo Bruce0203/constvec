@@ -1,0 +1,10 @@
+[package]
+name = "constvec"
+version = "0.1.0"
+edition = "2024"
+description = "no heap vec in const expr"
+author = "Bruce0203 <brucefreedy@gmail.com>"
+repository = "https://github.com/Bruce0203/constvec"
+license = "MIT"
+
+[dependencies]
