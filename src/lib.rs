@@ -14,7 +14,7 @@ pub struct ConstVec<T> {
     arr: T,
 }
 
-impl<T, const N: usize> Deref for ConstVec<[T; N]> {
+impl<T, const N: usize> const Deref for ConstVec<[T; N]> {
     type Target = [T];
 
     fn deref(&self) -> &Self::Target {
@@ -22,7 +22,7 @@ impl<T, const N: usize> Deref for ConstVec<[T; N]> {
     }
 }
 
-impl<T, const N: usize> DerefMut for ConstVec<[T; N]> {
+impl<T, const N: usize> const DerefMut for ConstVec<[T; N]> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.as_slice_mut()
     }
