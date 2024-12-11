@@ -5,7 +5,7 @@
 use core::slice;
 use std::{
     mem::MaybeUninit,
-    ops::{Add, Deref, DerefMut},
+    ops::{Add, Deref, DerefMut, Index, IndexMut},
 };
 
 #[derive(Debug)]
@@ -19,6 +19,20 @@ impl<T, const N: usize> const Deref for ConstVec<[T; N]> {
 
     fn deref(&self) -> &Self::Target {
         self.as_slice()
+    }
+}
+
+impl<T, const N: usize> Index<usize> for ConstVec<[T; N]> {
+    type Output = T;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.arr[index]
+    }
+}
+
+impl<T, const N: usize> IndexMut<usize> for ConstVec<[T; N]> {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.arr[index]
     }
 }
 
