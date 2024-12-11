@@ -14,34 +14,6 @@ pub struct ConstVec<T> {
     arr: T,
 }
 
-impl<T, const N: usize> const Deref for ConstVec<[T; N]> {
-    type Target = [T];
-
-    fn deref(&self) -> &Self::Target {
-        self.as_slice()
-    }
-}
-
-impl<T, const N: usize> Index<usize> for ConstVec<[T; N]> {
-    type Output = T;
-
-    fn index(&self, index: usize) -> &Self::Output {
-        &self.arr[index]
-    }
-}
-
-impl<T, const N: usize> IndexMut<usize> for ConstVec<[T; N]> {
-    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
-        &mut self.arr[index]
-    }
-}
-
-impl<T, const N: usize> const DerefMut for ConstVec<[T; N]> {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        self.as_slice_mut()
-    }
-}
-
 impl<T: PartialEq, const N: usize> PartialEq for ConstVec<[T; N]> {
     fn eq(&self, other: &Self) -> bool {
         self.as_slice() == other.as_slice()
