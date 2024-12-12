@@ -177,6 +177,19 @@ impl<T, const N: usize> ConstVec<[T; N]> {
         }
         &mut self.arr[index]
     }
+
+    pub const unsafe fn set_with_no_drop_on_swap(&mut self, index: usize, value: &T)
+    where
+        [(); size_of::<T>()]:,
+    {
+        if index >= self.len {
+            panic!()
+        }
+        unsafe { &mut *(&mut self.arr[index] as *mut _ as *mut [u8; size_of::<T>()]) }
+            .copy_from_slice(unsafe {
+                slice::from_raw_parts(value as *const _ as *const u8, size_of::<T>())
+            });
+    }
 }
 
 impl<T: Clone> Clone for ConstVec<T> {
