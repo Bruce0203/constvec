@@ -138,15 +138,15 @@ impl<T: Clone> Clone for ConstVec<T> {
     }
 }
 
-impl<T: Sized + Copy, const N1: usize, const N2: usize> const Add<ConstVec<[T; N2]>>
-    for ConstVec<[T; N1]>
+impl<T: Sized + Copy, const N1: usize, const N2: usize> const Add<&ConstVec<[T; N2]>>
+    for &ConstVec<[T; N1]>
 where
     [(); size_of::<T>()]:,
     [(); N1 + N2]:,
 {
     type Output = ConstVec<[T; N1 + N2]>;
 
-    fn add(self, rhs: ConstVec<[T; N2]>) -> Self::Output {
+    fn add(self, rhs: &ConstVec<[T; N2]>) -> Self::Output {
         let slice1 = self;
         let slice2 = rhs;
         let mut slice: [[u8; size_of::<T>()]; N1 + N2] =
