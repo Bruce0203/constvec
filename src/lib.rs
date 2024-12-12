@@ -1,3 +1,4 @@
+#![feature(specialization)]
 #![feature(const_copy_from_slice)]
 #![feature(const_trait_impl)]
 #![feature(generic_const_exprs)]
@@ -169,4 +170,8 @@ where
             arr: unsafe { const_transmute(slice) },
         }
     }
+}
+
+impl<T> const Drop for ConstVec<T> {
+    fn drop(&mut self) {}
 }
