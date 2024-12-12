@@ -128,8 +128,10 @@ impl<T, const N: usize> ConstVec<[T; N]> {
     where
         [(); size_of::<T>()]:,
     {
+        let arr: [[u8; size_of::<T>()]; N] = [[0_u8; size_of::<T>()]; N];
+        let arr: [T; N] = unsafe { const_transmute(arr) };
         #[allow(invalid_value)]
-        let mut result: Self = unsafe { MaybeUninit::uninit().assume_init() };
+        let mut result: Self = ConstVec::new(self.len, arr);
         result.len = self.len;
         let dst: &mut [[u8; size_of::<T>()]; N] = unsafe { const_transmute(&mut result.arr) };
         let src: &[[u8; size_of::<T>()]; N] = unsafe { const_transmute(&self.arr) };
