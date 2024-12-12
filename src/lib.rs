@@ -35,6 +35,29 @@ impl<T: PartialEq, const N: usize> PartialEq for ConstVec<[T; N]> {
 
 impl<T: Eq, const N: usize> Eq for ConstVec<[T; N]> {}
 
+#[const_trait]
+pub trait ConstEq {
+    fn eq(&self, other: &Self) -> bool;
+}
+
+impl<T: const ConstEq, const N: usize> ConstEq for ConstVec<[T; N]> {
+    fn eq(&self, other: &Self) -> bool {
+        let slice = self.as_slice();
+        let rhs_slice = other.as_slice();
+        if slice.len() != rhs_slice.len() {
+            return false;
+        }
+        let mut i = 0;
+        while i < slice.len() {
+            if !slice[i].eq(&rhs_slice[i]) {
+                return false;
+            }
+            i += 1;
+        }
+        true
+    }
+}
+
 impl<T, const N: usize> ConstVec<[T; N]> {
     pub const fn as_slice(&self) -> &[T] {
         unsafe { slice::from_raw_parts(&self.arr as *const _ as *const T, self.len) }
