@@ -40,7 +40,7 @@ pub trait ConstEq {
     fn eq(&self, other: &Self) -> bool;
 }
 
-impl<T: const ConstEq, const N: usize> ConstEq for ConstVec<[T; N]> {
+impl<T: const ConstEq, const N: usize> const ConstEq for ConstVec<[T; N]> {
     fn eq(&self, other: &Self) -> bool {
         let slice = self.as_slice();
         let rhs_slice = other.as_slice();
