@@ -164,6 +164,13 @@ impl<T, const N: usize> ConstVec<[T; N]> {
         result
     }
 
+    pub const fn get(&self, index: usize) -> &T {
+        if index >= self.len {
+            panic!()
+        }
+        &self.arr[index]
+    }
+
     pub const fn get_mut(&mut self, index: usize) -> &mut T {
         if index >= self.len {
             panic!()
