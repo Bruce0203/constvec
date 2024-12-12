@@ -91,6 +91,10 @@ impl<T, const N: usize> ConstVec<[T; N]> {
         self.len
     }
 
+    pub const unsafe fn set_len(&mut self, value: usize) {
+        self.len = value;
+    }
+
     pub const fn push(&mut self, value: &T)
     where
         [(); size_of::<T>()]:,
