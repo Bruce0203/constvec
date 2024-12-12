@@ -168,14 +168,14 @@ impl<T, const N: usize> ConstVec<[T; N]> {
         if index >= self.len {
             panic!()
         }
-        &self.arr[index]
+        unsafe { &*(&self.arr as *const _ as *const T).add(index) }
     }
 
     pub const fn get_mut(&mut self, index: usize) -> &mut T {
         if index >= self.len {
             panic!()
         }
-        &mut self.arr[index]
+        unsafe { &mut *(&mut self.arr as *mut _ as *mut T).add(index) }
     }
 
     pub const unsafe fn set_with_no_drop_on_swap(&mut self, index: usize, value: &T)
