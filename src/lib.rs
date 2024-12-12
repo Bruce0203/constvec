@@ -210,7 +210,3 @@ where
         }
     }
 }
-
-impl<T> const Drop for ConstVec<T> {
-    fn drop(&mut self) {}
-}
