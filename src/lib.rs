@@ -234,3 +234,29 @@ where
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use std::time::Instant;
+
+    use crate::ConstVec;
+
+    #[test]
+    fn asdf() {
+        std::thread::Builder::new()
+            .stack_size(1024 * 1024 * 1000)
+            .spawn(|| {
+                let now = Instant::now();
+                const fn asd() {
+                    let mut vec = ConstVec::new(0, [0; 100000]);
+                    vec.clone();
+                    vec.append(&vec.clone());
+                }
+                asd();
+                println!("{:?}", now.elapsed());
+            })
+            .unwrap()
+            .join()
+            .unwrap();
+    }
+}
