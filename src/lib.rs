@@ -118,7 +118,7 @@ impl<T, const N: usize> ConstVec<[T; N]> {
         } else {
             let mut i = 0;
             while i < target.len() {
-                self.push(&target.arr[i]);
+                self.push(target.get(i));
                 i += 1;
             }
         }
