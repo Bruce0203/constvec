@@ -40,6 +40,22 @@ pub trait ConstEq {
     fn eq(&self, other: &Self) -> bool;
 }
 
+macro_rules! impl_const_eq {
+    ($($type:ty),*) => {
+        $(
+        impl const ConstEq for $type {
+            fn eq(&self, other: &Self) -> bool {
+                *self == *other
+            }
+        }
+        )*
+    };
+}
+
+impl_const_eq!(
+    u8, i8, u16, i16, u32, i32, u64, i64, f32, f64, bool, usize, isize, i128, u128
+);
+
 impl<T: const ConstEq, const N: usize> const ConstEq for ConstVec<[T; N]> {
     fn eq(&self, other: &Self) -> bool {
         let slice = self.as_slice();
