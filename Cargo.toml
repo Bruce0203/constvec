@@ -1,6 +1,6 @@
 [package]
 name = "constvec"
-version = "0.1.9"
+version = "0.1.10"
 edition = "2024"
 description = "no heap vec in const expr"
 author = "Bruce0203 <brucefreedy@gmail.com>"
