@@ -190,6 +190,17 @@ impl<T, const N: usize> ConstVec<[T; N]> {
                 slice::from_raw_parts(value as *const _ as *const u8, size_of::<T>())
             });
     }
+
+    pub const fn append_slice(&mut self, slice: &[T])
+    where
+        [(); size_of::<T>()]:,
+    {
+        let mut i = 0;
+        while i < slice.len() {
+            self.push(&slice[i]);
+            i += 1;
+        }
+    }
 }
 
 impl<T: Clone> Clone for ConstVec<T> {
