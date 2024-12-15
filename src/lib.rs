@@ -4,7 +4,11 @@
 #![feature(generic_const_exprs)]
 
 use core::slice;
-use std::{mem::MaybeUninit, ops::Add};
+use std::{
+    fmt::{Debug, Pointer},
+    mem::MaybeUninit,
+    ops::Add,
+};
 
 const unsafe fn const_transmute<A, B>(a: A) -> B {
     if std::mem::size_of::<A>() != std::mem::size_of::<B>() {
@@ -21,10 +25,15 @@ const unsafe fn const_transmute<A, B>(a: A) -> B {
     unsafe { std::mem::ManuallyDrop::into_inner(Union { a }.b) }
 }
 
-#[derive(Debug)]
 pub struct ConstVec<T> {
     len: usize,
     arr: T,
+}
+
+impl<T: Debug, const N: usize> Debug for ConstVec<[T; N]> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.as_slice().fmt(f)
+    }
 }
 
 impl<T: PartialEq, const N: usize> PartialEq for ConstVec<[T; N]> {
