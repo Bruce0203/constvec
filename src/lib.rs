@@ -221,6 +221,8 @@ impl<T: Clone> Clone for ConstVec<T> {
     }
 }
 
+impl<T: Copy> Copy for ConstVec<T> {}
+
 impl<T: Sized + Copy, const N1: usize, const N2: usize> const Add<&ConstVec<[T; N2]>>
     for &ConstVec<[T; N1]>
 where
