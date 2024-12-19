@@ -87,7 +87,7 @@ impl<T, const N: usize> ConstVec<[T; N]> {
     #[allow(invalid_value)]
     pub const EMPTY: ConstVec<[T; N]> = ConstVec::new(
         0,
-        [const { unsafe { MaybeUninit::uninit().assume_init() } }; N],
+        [const { unsafe { MaybeUninit::zeroed().assume_init() } }; N],
     );
 }
 
