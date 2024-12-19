@@ -84,6 +84,14 @@ impl<T: const ConstEq, const N: usize> const ConstEq for ConstVec<[T; N]> {
 }
 
 impl<T, const N: usize> ConstVec<[T; N]> {
+    #[allow(invalid_value)]
+    pub const EMPTY: ConstVec<[T; N]> = ConstVec::new(
+        0,
+        [const { unsafe { MaybeUninit::uninit().assume_init() } }; N],
+    );
+}
+
+impl<T, const N: usize> ConstVec<[T; N]> {
     pub const fn as_slice(&self) -> &[T] {
         unsafe { slice::from_raw_parts(&self.arr as *const _ as *const T, self.len) }
     }
